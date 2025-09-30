@@ -1,0 +1,92 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   */
+  :root {
+    /* Clearnode brand - deep navy + neon jade */
+    --background: 222 36% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 36% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 36% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 160 84% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222 26% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 18% 18%;
+    --muted-foreground: 215 16% 72%;
+
+    --accent: 200 80% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 18% 22%;
+    --input: 220 18% 22%;
+    --ring: 160 84% 40%;
+
+    --radius: 0.8rem;
+
+    /* Extras */
+    --grid-color: 0 0% 100% / 0.08;
+  }
+
+  .dark {
+    /* Keep dark similar for consistency */
+    --background: 222 36% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 36% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 36% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 160 84% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222 26% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 18% 18%;
+    --muted-foreground: 215 16% 72%;
+
+    --accent: 200 80% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 18% 22%;
+    --input: 220 18% 22%;
+    --ring: 160 84% 40%;
+
+    --grid-color: 0 0% 100% / 0.08;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html, body { height: 100%; }
+  body { @apply bg-background text-foreground antialiased; font-feature-settings: "ss01" on, "ss02" on; }
+}
+
+@layer utilities {
+  .glass { @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-glass; }
+  .container-px { @apply px-4 sm:px-6 lg:px-8; }
+}
