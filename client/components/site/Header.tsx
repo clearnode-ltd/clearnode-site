@@ -6,7 +6,8 @@ import { Menu, X } from "lucide-react";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { pathname } = useLocation();
+  const [activeSection, setActiveSection] = useState("");
+  const { pathname, hash } = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +20,45 @@ export default function Header() {
   useEffect(() => {
     // Close mobile menu on route change
     setMobileMenuOpen(false);
+
+    // Scroll to top when navigating to different pages
+    if (pathname === '/' || pathname === '/contact') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [pathname]);
+
+  // Track active section based on scroll position
+  useEffect(() => {
+    if (pathname !== '/') {
+      setActiveSection("");
+      return;
+    }
+
+    const handleScroll = () => {
+      const sections = ['services', 'industries', 'process'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            return;
+          }
+        }
+      }
+
+      // If we're at the top or above all sections, no section is active
+      if (window.scrollY < 200) {
+        setActiveSection("");
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [pathname]);
 
   // Prevent body scroll when menu is open
@@ -32,6 +72,19 @@ export default function Header() {
       document.body.style.overflow = 'unset';
     };
   }, [mobileMenuOpen]);
+
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+
+    if (pathname === '/') {
+      // Already on home, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Navigate to home
+      navigate('/');
+    }
+  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
@@ -54,23 +107,50 @@ export default function Header() {
     }
   };
 
+  const isActiveLink = (section: string) => {
+    return pathname === '/' && activeSection === section;
+  };
+
   return (
     <>
       <header className={`fixed inset-x-0 top-0 z-50 transition-all ${
         scrolled ? "backdrop-blur-xl bg-background/60 border-b border-white/10" : "bg-transparent"
       }`}>
         <div className="container container-px flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center gap-2 group">
+          <a href="/" onClick={handleHomeClick} className="flex items-center gap-2 group cursor-pointer">
             <div className="h-8 w-8 rounded-md bg-primary/90 ring-4 ring-primary/20 grid place-items-center text-primary-foreground font-black">C</div>
             <span className="font-semibold tracking-tight text-lg">Clearnode Consulting</span>
-          </Link>
+          </a>
 
-          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <NavLink to="/" className={({isActive})=>`hover:text-primary transition-colors ${isActive && pathname==='/'? 'text-primary' : 'text-foreground/80'}`}>Home</NavLink>
-            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-foreground/80 hover:text-primary transition-colors">Services</a>
-            <a href="#industries" onClick={(e) => handleNavClick(e, 'industries')} className="text-foreground/80 hover:text-primary transition-colors">Industries</a>
-            <a href="#process" onClick={(e) => handleNavClick(e, 'process')} className="text-foreground/80 hover:text-primary transition-colors">Process</a>
+            <a
+              href="/"
+              onClick={handleHomeClick}
+              className={`hover:text-primary transition-colors ${pathname === '/' && !activeSection ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Home
+            </a>
+            <a
+              href="#services"
+              onClick={(e) => handleNavClick(e, 'services')}
+              className={`hover:text-primary transition-colors ${isActiveLink('services') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Services
+            </a>
+            <a
+              href="#industries"
+              onClick={(e) => handleNavClick(e, 'industries')}
+              className={`hover:text-primary transition-colors ${isActiveLink('industries') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Industries
+            </a>
+            <a
+              href="#process"
+              onClick={(e) => handleNavClick(e, 'process')}
+              className={`hover:text-primary transition-colors ${isActiveLink('process') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Process
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -78,7 +158,6 @@ export default function Header() {
               <Link to="/contact">Talk to us</Link>
             </Button>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 text-foreground/80 hover:text-foreground transition-colors"
@@ -90,7 +169,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
@@ -98,27 +176,42 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile Menu - Glass effect with glow orbs */}
       <div className={`fixed top-[73px] right-0 bottom-0 z-40 w-64 transform transition-transform duration-300 ease-in-out md:hidden ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        {/* Glass container with glow orbs */}
         <div className="relative h-full glass overflow-hidden">
-          {/* Glow orbs */}
           <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
           <div className="absolute top-1/2 -left-20 h-40 w-40 rounded-full bg-accent/15 blur-3xl" />
 
-          {/* Nav content */}
           <nav className="relative flex flex-col p-6 gap-6 h-full">
-            <NavLink
-              to="/"
-              className={({isActive})=>`text-lg hover:text-primary transition-colors ${isActive && pathname==='/'? 'text-primary' : 'text-foreground/80'}`}
+            <a
+              href="/"
+              onClick={handleHomeClick}
+              className={`text-lg hover:text-primary transition-colors ${pathname === '/' && !activeSection ? 'text-primary' : 'text-foreground/80'}`}
             >
               Home
-            </NavLink>
-            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Services</a>
-            <a href="#industries" onClick={(e) => handleNavClick(e, 'industries')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Industries</a>
-            <a href="#process" onClick={(e) => handleNavClick(e, 'process')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Process</a>
+            </a>
+            <a
+              href="#services"
+              onClick={(e) => handleNavClick(e, 'services')}
+              className={`text-lg hover:text-primary transition-colors ${isActiveLink('services') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Services
+            </a>
+            <a
+              href="#industries"
+              onClick={(e) => handleNavClick(e, 'industries')}
+              className={`text-lg hover:text-primary transition-colors ${isActiveLink('industries') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Industries
+            </a>
+            <a
+              href="#process"
+              onClick={(e) => handleNavClick(e, 'process')}
+              className={`text-lg hover:text-primary transition-colors ${isActiveLink('process') ? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Process
+            </a>
             <div className="mt-auto pt-4 border-t border-white/10">
               <Button asChild className="w-full">
                 <Link to="/contact">Talk to us</Link>

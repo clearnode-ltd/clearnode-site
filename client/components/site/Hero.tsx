@@ -26,7 +26,7 @@ export default function Hero() {
         </ParallaxLayer>
 
         <ParallaxLayer depth={-0.05} className="max-w-2xl mt-6">
-          <p className="text-xl text-foreground/70">
+          <p className="text-lg sm:text-xl text-foreground/70">
             We eliminate technical risk. From cloud architecture to AI platforms, Clearnode delivers enterprise-grade software that scales with your business—across healthcare, fintech, and high-growth industries.
           </p>
         </ParallaxLayer>
