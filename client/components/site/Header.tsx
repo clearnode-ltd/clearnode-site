@@ -21,12 +21,25 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
 
     if (pathname !== '/') {
-      navigate('/');
+      // Navigate to home with hash
+      navigate('/#' + sectionId);
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
@@ -85,26 +98,34 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile Menu */}
-      <div className={`fixed top-[73px] right-0 bottom-0 z-40 w-64 bg-background border-l border-white/10 transform transition-transform duration-300 ease-in-out md:hidden ${
+      {/* Mobile Menu - Glass effect with glow orbs */}
+      <div className={`fixed top-[73px] right-0 bottom-0 z-40 w-64 transform transition-transform duration-300 ease-in-out md:hidden ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        <nav className="flex flex-col p-6 gap-6">
-          <NavLink
-            to="/"
-            className={({isActive})=>`text-lg hover:text-primary transition-colors ${isActive && pathname==='/'? 'text-primary' : 'text-foreground/80'}`}
-          >
-            Home
-          </NavLink>
-          <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Services</a>
-          <a href="#industries" onClick={(e) => handleNavClick(e, 'industries')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Industries</a>
-          <a href="#process" onClick={(e) => handleNavClick(e, 'process')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Process</a>
-          <div className="mt-4 pt-4 border-t border-white/10">
-            <Button asChild className="w-full">
-              <Link to="/contact">Talk to us</Link>
-            </Button>
-          </div>
-        </nav>
+        {/* Glass container with glow orbs */}
+        <div className="relative h-full glass overflow-hidden">
+          {/* Glow orbs */}
+          <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute top-1/2 -left-20 h-40 w-40 rounded-full bg-accent/15 blur-3xl" />
+
+          {/* Nav content */}
+          <nav className="relative flex flex-col p-6 gap-6 h-full">
+            <NavLink
+              to="/"
+              className={({isActive})=>`text-lg hover:text-primary transition-colors ${isActive && pathname==='/'? 'text-primary' : 'text-foreground/80'}`}
+            >
+              Home
+            </NavLink>
+            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Services</a>
+            <a href="#industries" onClick={(e) => handleNavClick(e, 'industries')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Industries</a>
+            <a href="#process" onClick={(e) => handleNavClick(e, 'process')} className="text-lg text-foreground/80 hover:text-primary transition-colors">Process</a>
+            <div className="mt-auto pt-4 border-t border-white/10">
+              <Button asChild className="w-full">
+                <Link to="/contact">Talk to us</Link>
+              </Button>
+            </div>
+          </nav>
+        </div>
       </div>
     </>
   );

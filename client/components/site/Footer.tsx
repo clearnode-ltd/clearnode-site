@@ -1,3 +1,5 @@
+import { Calendar } from "lucide-react";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 mt-16">
@@ -18,10 +20,21 @@ export default function Footer() {
         </div>
         <div>
           <p className="font-medium text-foreground/90 mb-2">Contact</p>
-          <a href="mailto:hello@clearnode.co.uk" className="hover:text-primary">hello@clearnode.co.uk</a>
+          <a href="mailto:hello@clearnode.co.uk" className="hover:text-primary block mb-2">hello@clearnode.co.uk</a>
+          <a
+            href="https://calendly.com/okwudili-ezeoke-clearnode/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+          >
+            <Calendar size={16} />
+            <span>Book a 30min call</span>
+          </a>
         </div>
       </div>
-      <div className="container container-px py-6 border-t border-white/10 text-xs text-foreground/60">© {new Date().getFullYear()} Clearnode Consulting Ltd. All rights reserved.</div>
+      <div className="container container-px py-6 border-t border-white/10 text-xs text-foreground/60">
+        © {new Date().getFullYear()} Clearnode Consulting Ltd. All rights reserved.
+      </div>
     </footer>
   );
 }
