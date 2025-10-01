@@ -18,7 +18,7 @@ export default function Hero() {
         <div className="absolute top-40 -right-24 h-96 w-96 rounded-full bg-accent/25 blur-3xl" />
       </div>
 
-      <div className="container container-px relative min-h-[70vh] sm:min-h-[60vh] flex flex-col justify-between">
+      <div className="container container-px relative min-h-[65vh] sm:min-h-[60vh] flex flex-col justify-between">
         <ParallaxLayer depth={-0.08} className="max-w-3xl">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
             We architect, build, and operate modern software.
@@ -42,7 +42,7 @@ export default function Hero() {
 
         <ParallaxLayer depth={0.06} className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4">
           {["Cloud", "AI", "Fintech", "Healthcare"].map((t) => (
-            <div key={t} className="glass rounded-xl p-4 text-base text-center animate-fadeUp" style={{animationDelay: `${Math.random()*0.3+0.05}s`}}>
+            <div key={t} className="glass rounded-xl p-4 text-sm sm:text-base text-center animate-fadeUp" style={{animationDelay: `${Math.random()*0.3+0.05}s`}}>
               {t}
             </div>
           ))}
