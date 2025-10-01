@@ -7,6 +7,10 @@ export const handleContactForm: RequestHandler = async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
+    console.log("Name: ", name);
+    console.log("Email: ", email);
+    console.log("Message: ", message);
+
     // Validation
     if (!name || !email || !message) {
       return res.status(400).json({ error: "All fields are required" });
