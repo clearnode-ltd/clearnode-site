@@ -7,15 +7,18 @@ export default function Footer() {
             <div className="h-7 w-7 rounded-md bg-primary/90 grid place-items-center text-primary-foreground font-black">C</div>
             <span className="font-semibold">Clearnode Consulting Ltd</span>
           </div>
-          <p className="max-w-sm">Architecting, building, and managing software for all industries.</p>
+          <p className="max-w-sm">
+            Clearnode Consulting Ltd - We build intelligent software solutions. Specializing in AI integration, SaaS platforms, and full-stack development for growing businesses. Based in the UK.
+          </p>
         </div>
         <div>
           <p className="font-medium text-foreground/90 mb-2">Offices</p>
           <p>Remote-first, global delivery</p>
+          <p>71-75 Shelton Street, Covent Garden, London, United Kingdom, WC2H 9JQ</p>
         </div>
         <div>
           <p className="font-medium text-foreground/90 mb-2">Contact</p>
-          <a href="mailto:hello@clearnode.consulting" className="hover:text-primary">hello@clearnode.consulting</a>
+          <a href="mailto:hello@clearnode.co.uk" className="hover:text-primary">hello@clearnode.co.uk</a>
         </div>
       </div>
       <div className="container container-px py-6 border-t border-white/10 text-xs text-foreground/60">© {new Date().getFullYear()} Clearnode Consulting Ltd. All rights reserved.</div>
