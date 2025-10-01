@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 
@@ -15,16 +15,15 @@ export default function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      const form = e.currentTarget;
-      const formDataObj = new FormData(form);
-
-      const response = await fetch("https://formsubmit.co/hello@clearnode.co.uk", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        body: formDataObj,
         headers: {
-          'Accept': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         toast({
@@ -33,7 +32,7 @@ export default function ContactForm() {
         });
         setFormData({ name: "", email: "", message: "" });
       } else {
-        throw new Error("Failed to send");
+        throw new Error(data.error || "Failed to send");
       }
     } catch (error) {
       toast({
@@ -48,10 +47,6 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="glass rounded-2xl p-6 grid gap-4">
-      <input type="hidden" name="_subject" value="New Message From Clearnode.co.uk" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_template" value="table" />
-
       <input
         required
         name="name"
