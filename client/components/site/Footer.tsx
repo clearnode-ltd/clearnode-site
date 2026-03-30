@@ -1,4 +1,5 @@
 import { Calendar } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function Footer() {
   return (
@@ -6,8 +7,11 @@ export default function Footer() {
       <div className="container container-px py-10 grid gap-6 md:grid-cols-3 text-sm text-foreground/70">
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-7 w-7 rounded-md bg-primary/90 grid place-items-center text-primary-foreground font-black">C</div>
-            <span className="font-semibold">Clearnode Consulting Ltd</span>
+            <BrandLogo
+              name="Clearnode Consulting Ltd"
+              className="h-7 w-7"
+              labelClassName="font-semibold"
+            />
           </div>
           <p className="max-w-sm">
             Clearnode Consulting Ltd - We build intelligent software solutions. Specializing in AI integration, SaaS platforms, and full-stack development for growing businesses. Based in the UK.

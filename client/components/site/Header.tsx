@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -118,8 +119,7 @@ export default function Header() {
       }`}>
         <div className="container container-px flex items-center justify-between py-4">
           <a href="/" onClick={handleHomeClick} className="flex items-center gap-2 group cursor-pointer">
-            <div className="h-8 w-8 rounded-md bg-primary/90 ring-4 ring-primary/20 grid place-items-center text-primary-foreground font-black">C</div>
-            <span className="font-semibold tracking-tight text-lg">Clearnode Consulting</span>
+            <BrandLogo name="Clearnode Consulting" className="h-16 w-16" />
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
